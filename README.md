@@ -1,2 +1,2 @@
-# cut
+# CUT
 CUT - cpu usage tracker
