@@ -20,8 +20,7 @@ typedef struct Reading {
 } Reading;
 
 // Skip lines in /proc/stat file to reach the selected CPU 
-void skip_lines(FILE *fp, int numlines)
-{
+void skip_lines(FILE *fp, int numlines) {
     int cnt = 0;
     char ch;
     while((cnt < numlines) && ((ch = getc(fp)) != EOF))
@@ -33,8 +32,7 @@ void skip_lines(FILE *fp, int numlines)
 }
 
 // Collect data from file and store in cpustat structure
-void get_stats(struct cpustat *st, int cpunum, char *path) 
-{
+void get_stats(struct cpustat *st, int cpunum, char *path) {
     FILE *fp = fopen(path, "r");
 
     // Skip the line 0 (overall CPU data)
@@ -49,8 +47,7 @@ void get_stats(struct cpustat *st, int cpunum, char *path)
 }
 
 // Calculate load with the given two cpustats 
-double calculate_load(struct cpustat *prev, struct cpustat *cur)
-{
+double calculate_load(struct cpustat *prev, struct cpustat *cur) {
     int idle_prev = (prev->t_idle) + (prev->t_iowait);
     int idle_cur = (cur->t_idle) + (cur->t_iowait);
 
