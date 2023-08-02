@@ -31,9 +31,9 @@ void *reader_thread(void *vptr_value) {
     sleep(1);
 
     for (int i=0; i < get_nprocs(); i++) {
+
         get_stats(&readings[i].st1, i, path);
         
-
     }
 
    pthread_mutex_unlock(&readings_mutex);
@@ -91,6 +91,15 @@ int main (void) {
 
     // Allocate memory according to the processors available in the system.    
     Reading* readings = malloc(nprocs*sizeof(Reading));
+    
+    // Check if memory allocation is successful
+    if (readings == NULL) {
+
+        printf("Unable to allocate memory!");
+        return 1;
+
+    }
+
     printf("This system has %i procesor(s).\n", nprocs);
     printf("\n");
 
