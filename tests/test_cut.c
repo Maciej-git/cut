@@ -1,4 +1,3 @@
-// Include .c file 
 #include "../functions.c"
 
 #include <stdio.h>
@@ -14,14 +13,15 @@ int main(void) {
     FILE *fp = fopen(path, "r");
     char cpu_id[5];
 
-    // Test skip_lines function
+    /* Test 'skip_lines' function */ 
     skip_lines(fp, 1);
     fscanf(fp, "%s ", cpu_id);
     
     // A skip of 1 line should result in "cpu0"
     assert (strcasecmp(cpu_id, "cpu0") == 0);
 
-    // Test get_stats function
+
+    /* Test 'get_stats' function */ 
    
     struct cpustat st0;
     // Read data for CPU1 from test file
@@ -30,7 +30,7 @@ int main(void) {
             && st0.t_iowait == 789 && st0.t_irq == 0 && st0.t_softirq == 386);
      
 
-    // Test calculate_load function
+    /* Test 'calculate_load' function */ 
 
     // Define 2 cpustat structs to simulate varoius readigs 
     struct cpustat st1 = {3192, 0, 8089, 1109510, 1238, 0, 1173};
