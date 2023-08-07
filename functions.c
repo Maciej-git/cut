@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <pthread.h>
 
+#define capacity 5
+
 // Structure definition to store CPU data from the /proc/stat file
 struct cpustat {
     unsigned long t_user;
@@ -12,12 +14,39 @@ struct cpustat {
     unsigned long t_softirq;
 };
 
+
+
 // Structre definition to collect CPU data in 2 different time periods
 typedef struct Reading {
     double cpu_load;
     struct cpustat st0;
     struct cpustat st1;
 } Reading;
+
+typedef char message[255]; 
+
+// Define Queue
+typedef struct _queue {
+    message *log[capacity];
+    int front;
+    int size;
+} queue;
+
+// Add message to queue 
+void enqueue(queue* q, message *data) {
+    q->log[(q->front+q->size) % capacity] = data;
+    q->size = q->size + 1;   
+}
+
+// Returns value that was removed from queue
+message* dequeue(queue* q) {
+    message* data = q->log[q->front];
+    q->front = q->front + 1;
+    q->size = q->size - 1;
+    
+    return data; 
+
+}
 
 // Skip lines in /proc/stat file to reach the selected CPU 
 void skip_lines(FILE *fp, int numlines) {
