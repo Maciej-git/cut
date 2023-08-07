@@ -46,5 +46,29 @@ int main(void) {
     // Expected value is 1.16%
     assert(rounded/100  == 1.16);
 
+    /* Test Queue */
+
+    // Define test queue
+    queue q;
+    q.front = 0;
+    q.size = 0;
+    
+    // Define test messages
+    message test_message0 = "Test mesaage 0";
+    message test_messsage1 = "Test message 1";
+
+    // Enqueue 2 test messages
+    enqueue(&q, &test_message0);
+    enqueue(&q, &test_messsage1);
+    
+    // Check queue front and size values after two messages insertion
+    assert(q.front == 0 && q.size == 2);
+
+    // Dequeue message
+    message* read = dequeue(&q);
+
+    // Check queue front, size values and returned message
+    assert(q.front == 1 && q.size == 1 && (strcasecmp(*read, *q.log[0]) == 0));
+    
     return 0;
 }
