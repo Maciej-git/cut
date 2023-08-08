@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <pthread.h>
+#include <stdatomic.h>
 
-#define capacity 5
+#define capacity 10
 
 // Structure definition to store CPU data from the /proc/stat file
 struct cpustat {
@@ -28,20 +29,21 @@ typedef char message[255];
 // Define Queue
 typedef struct _queue {
     message *log[capacity];
-    int front;
-    int size;
+    atomic_int front;
+    atomic_int size;
 } queue;
 
+
 // Add message to queue 
-void enqueue(queue* q, message *data) {
-    q->log[(q->front+q->size) % capacity] = data;
-    q->size = q->size + 1;   
+void enqueue(queue* q, message* data) {
+    q->log[(q->front + q->size) % capacity] = data;
+    q->size = q->size + 1;      
 }
 
 // Returns value that was removed from queue
 message* dequeue(queue* q) {
     message* data = q->log[q->front];
-    q->front = q->front + 1;
+    q->front = ((q->front + 1) % capacity);
     q->size = q->size - 1;
     
     return data; 
