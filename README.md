@@ -16,11 +16,11 @@ Program works in continuous loop, break (CTRL+C) to stop.
 
 ### functions.c
 
-The file contains functions needed to open, read /proc/stat file and calculate CPU usage.
+The file contains core functions needed to open, read /proc/stat file and calculate CPU usage. Additionally, functions such as watchdog, log file generation and a SIGTERM handler to catch the break signal (CTRL+C) are also provided.
 
 ### main.c
 
-The file contains application main function and helper functions to run the threads: "Reader", "Analyzer" and "Printer" and SIGTERM handler to catch the break signal (CTRL+C).
+The file contains application main function and runs the threads: "Reader", "Analyzer", "Printer", "Watchdog" and "Logger".
 
 ### /tests
 
