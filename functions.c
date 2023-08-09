@@ -5,6 +5,7 @@
 #include <sys/sysinfo.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #define capacity 10
 
@@ -47,8 +48,11 @@ char *path = "/proc/stat";
 
 // Add message to queue 
 void enqueue(queue* q, message* data) {
-    q->log[(q->front + q->size) % capacity] = data;
-    q->size = q->size + 1;      
+    if (q->size < capacity) {
+        q->log[(q->front + q->size) % capacity] = data;
+        q->size = q->size + 1;      
+    }
+    
 }
 
 // Returns value that was removed from queue
@@ -242,13 +246,15 @@ void *printer_thread(void *vptr_value) {
     pthread_mutex_lock(&readings_mutex);
 
     Reading *readings = (Reading *)vptr_value;
-
-    printf("\n");
+    system("clear");
+    printf("This system has %i procesor(s).\n\n", get_nprocs());
     for (int i=0; i < get_nprocs(); i++) {
         printf("CPU%i %.2lf %%\n", i, readings[i].cpu_load);
     }
 
     pthread_mutex_unlock(&readings_mutex);
+
+    printf("\nPress CTRL+C to stop\n");
 
     return 0;
 }
