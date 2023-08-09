@@ -5,12 +5,14 @@
 #include <strings.h>
 #include <math.h>
 
+
+
 // Define a path to test file, containig exemple reading from /proc/stat
-char *path = "../tests/testfile";
+char *path_testfile = "../tests/testfile";
 
 int main(void) {
     
-    FILE *fp = fopen(path, "r");
+    FILE *fp = fopen(path_testfile, "r");
     char cpu_id[5];
 
     /* Test 'skip_lines' function */ 
@@ -25,7 +27,7 @@ int main(void) {
    
     struct cpustat st0;
     // Read data for CPU1 from test file
-    get_stats(&st0,1, path);
+    get_stats(&st0,1, path_testfile);
     assert (st0.t_user == 2344 && st0.t_nice == 0 && st0.t_system == 4886 && st0.t_idle == 641072 
             && st0.t_iowait == 789 && st0.t_irq == 0 && st0.t_softirq == 386);
      
@@ -54,18 +56,18 @@ int main(void) {
     q.size = 0;
     
     // Define test messages
-    message test_message0 = "Test mesaage 0";
-    message test_messsage1 = "Test message 1";
+    message test_message0 = "Test message 0";
+    message test_message1 = "Test message 1";
 
     // Enqueue 2 test messages
     enqueue(&q, &test_message0);
-    enqueue(&q, &test_messsage1);
+    enqueue(&q, &test_message1);
     
     // Check queue front and size values after two messages insertion
     assert(q.front == 0 && q.size == 2);
 
     // Dequeue message
-    message* read = dequeue(&q);
+    message *read = dequeue(&q);
 
     // Check queue front, size values and returned message
     assert(q.front == 1 && q.size == 1 && (strcasecmp(*read, *q.log[0]) == 0));
