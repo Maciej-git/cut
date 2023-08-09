@@ -131,7 +131,8 @@ void *watchdog_thread(void *(vptr_value)) {
             message w0 = "Thread 'Reader' timeout!";
             enqueue(&log_messages, &w0);
             watchdog_active = true;
-            run = false;    
+            run = false;
+            break;    
         }
 
         if (thr_active[1] != 1) {
@@ -140,7 +141,8 @@ void *watchdog_thread(void *(vptr_value)) {
             message w1 = "Thread 'Analyzer' timeout!";
             enqueue(&log_messages, &w1);
             watchdog_active = true;
-            run = false;    
+            run = false;
+            break;    
         }
 
         if (thr_active[2] != 1) {
@@ -149,7 +151,8 @@ void *watchdog_thread(void *(vptr_value)) {
             message w2 = "Thread 'Printer' timeout!";
             enqueue(&log_messages, &w2);
             watchdog_active = true;
-            run = false;    
+            run = false;
+            break;    
         }
         pthread_mutex_unlock(&thr_acive_mutex);
     }
@@ -259,7 +262,6 @@ void *logger_thread(void *q_data) {
         FILE *file = fopen("log.txt", "a");
         fprintf(file, "Front: %i Size: %i %s\n", q->front, q->size, *m);
         fclose(file);
-
     }
     
     return 0;
