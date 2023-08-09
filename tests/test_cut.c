@@ -72,5 +72,24 @@ int main(void) {
     // Check queue front, size values and returned message
     assert(q.front == 1 && q.size == 1 && (strcasecmp(*read, *q.log[0]) == 0));
     
+    // Test watchdog activation
+    void *test = NULL;
+    assert(watchdog_active == false);
+    watchdog_thread(test);
+    assert(watchdog_active == true);
+    
+    // Test logger function
+    logger_thread(&q);
+    
+    FILE *log_file = fopen("log.txt", "r");
+    assert(log_file != NULL);
+
+    char buff[32];
+    fgets(buff, sizeof(buff), log_file);
+    
+    assert(strcasecmp(buff, "Front: 2 Size: 0 Test message 1") == 0);
+    
+    fclose(log_file);
+
     return 0;
 }
