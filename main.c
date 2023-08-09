@@ -19,7 +19,7 @@ extern bool watchdog_active;
 /* Function prototypes */
 
 // Watchdog thread function
-void *watchdog_thread(void *(vptr_value));
+void *watchdog_thread(void *vptr_value);
 
 // Reader thread function
 void *reader_thread(void *vptr_value); 
@@ -62,18 +62,23 @@ int main (void) {
     printf("\n");
 
     signal(SIGINT, sig_handler);
-    pthread_create(&watchdog, NULL, watchdog_thread, NULL);
+    void *test = NULL;
+    pthread_create(&watchdog, NULL, watchdog_thread, test);
    
     while(run) { 
-        pthread_create(&logger, NULL, logger_thread, (void *)&log_messages);
+        
         pthread_create(&reader, NULL, reader_thread, (void *)readings);
         pthread_create(&analyzer, NULL, analyzer_thread, (void *)readings);
         pthread_create(&printer, NULL, printer_thread, (void *)readings);
+        pthread_create(&logger, NULL, logger_thread, (void *)&log_messages);
         
         pthread_join(reader, NULL);
         pthread_join(analyzer, NULL);
-        pthread_join(printer, NULL);   
+        pthread_join(printer, NULL);
+        pthread_join(logger, NULL);   
     }
+
+    
 
     // Free memory and print "good bye" message 
     free(readings);
@@ -92,6 +97,8 @@ int main (void) {
     }
         printf("Watchdog stopped the program, please check the log file!\n");
     }
+    
+    pthread_join(watchdog, NULL); 
     
     return 0;
 }

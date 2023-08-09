@@ -113,11 +113,10 @@ double calculate_load(struct cpustat *prev, struct cpustat *cur) {
 
 // Watchdog thread function
 // Tests thr_active signals
-void *watchdog_thread(void *(vptr_value)) {
+void *watchdog_thread(void *vptr_value) {
 
     while (1) {
         pthread_mutex_lock(&thr_acive_mutex);
-        
         // Reset signals from threads
         memset(thr_active, 0, sizeof(thr_active));
     
