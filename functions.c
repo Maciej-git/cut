@@ -131,7 +131,7 @@ void *watchdog_thread(void *(vptr_value)) {
         // If any thread signal is not set, then stop the program due to timeout.
         if (thr_active[0] != 1) {
             pthread_mutex_unlock(&thr_acive_mutex);
-            printf("Reader timedout!\n");
+            //printf("Reader timeout!\n");
             message w0 = "Thread 'Reader' timeout!";
             enqueue(&log_messages, &w0);
             watchdog_active = true;
@@ -141,7 +141,7 @@ void *watchdog_thread(void *(vptr_value)) {
 
         if (thr_active[1] != 1) {
             pthread_mutex_unlock(&thr_acive_mutex);
-            printf("Analyzer timedout!\n");
+            //printf("Analyzer timeout!\n");
             message w1 = "Thread 'Analyzer' timeout!";
             enqueue(&log_messages, &w1);
             watchdog_active = true;
@@ -151,7 +151,7 @@ void *watchdog_thread(void *(vptr_value)) {
 
         if (thr_active[2] != 1) {
             pthread_mutex_unlock(&thr_acive_mutex);
-            printf("Printer timedout!\n");
+            //printf("Printer timeout!\n");
             message w2 = "Thread 'Printer' timeout!";
             enqueue(&log_messages, &w2);
             watchdog_active = true;
@@ -166,14 +166,17 @@ void *watchdog_thread(void *(vptr_value)) {
 
 // Reader thread function
 void *reader_thread(void *vptr_value) {
-    
+
+    // Test message generated from thread
+
+    /* 
     char* bar = "Reader thread active!";
     message* foo;
     foo = (message*)bar;
-    
-    enqueue(&log_messages, foo);
-    
 
+    enqueue(&log_messages, foo);
+    */
+    
     // Set thread active signal
     pthread_mutex_lock(&thr_acive_mutex);
 
@@ -229,13 +232,16 @@ void *analyzer_thread(void *vptr_value) {
 
 // Printer thread function
 void *printer_thread(void *vptr_value) {
-    
+
+    // Test message generated from thread
+    /*
     char* bar = "Printer thread active!";
     message* foo;
     foo = (message*)bar;
 
     enqueue(&log_messages, foo);
-    
+    */
+
     // Set thread active signal
     pthread_mutex_lock(&thr_acive_mutex);
 
